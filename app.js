@@ -1,9 +1,14 @@
+require('dotenv').config();
 const express = require('express');
+const connectDB = require('./src/config/db');
 const TaskController = require('./src/controllers/taskController');
 const taskRoutes = require('./src/routes/taskRoutes');
 
 const app = express();
-const PORT = 3000;
+
+// Connexion à MongoDB (asynchrone)
+connectDB();
+const PORT = process.env.PORT || 3000;
 
 // Middleware pour parser le JSON
 app.use(express.json());

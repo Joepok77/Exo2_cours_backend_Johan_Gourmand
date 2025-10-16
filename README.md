@@ -6,12 +6,13 @@ API simple pour gérer une liste de tâches, développée en JavaScript avec Exp
 
 ```
 express_todolist/
-├── models/
-│   └── task.js
-├── controllers/
-│   └── taskController.js
-├── routes/
-│   └── taskRoutes.js
+├── src/
+│   ├── controllers/
+│   │   └── taskController.js
+│   ├── models/
+│   │   └── task.js
+│   └── routes/
+│       └── taskRoutes.js
 ├── .gitignore
 ├── app.js
 ├── package.json
@@ -20,9 +21,9 @@ express_todolist/
 
 ## Architecture MVC
 
-- **Models** (`models/`): Classe `Task` représentant une tâche
-- **Controllers** (`controllers/`): `TaskController` gère la logique métier
-- **Routes** (`routes/`): Définition des endpoints API
+- **Models** (`src/models/`): Classe `Task` représentant une tâche
+- **Controllers** (`src/controllers/`): `TaskController` gère la logique métier
+- **Routes** (`src/routes/`): Définition des endpoints API
 
 ## Installation
 

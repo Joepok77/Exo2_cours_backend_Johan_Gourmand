@@ -41,10 +41,8 @@ git clone https://github.com/Joepok77/Exo2_cours_backend_Johan_Gourmand.git
 cd Exo2_cours_backend_Johan_Gourmand
 
 # Installer les dependances de production
-npm install express cors dotenv mongoose pg
+npm install 
 
-# Installer les dependances de developpement
-npm install --save-dev nodemon
 ```
 
 ## Configuration

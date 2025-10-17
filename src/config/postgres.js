@@ -5,10 +5,10 @@ const { Pool } = require('pg');
  * Utilise les variables d'environnement pour la connexion
  */
 const pool = new Pool({
-  host: process.env.POSTGRES_HOST || 'localhost',
-  port: process.env.POSTGRES_PORT || 5432,
-  database: process.env.POSTGRES_DB || 'todolist',
-  user: process.env.POSTGRES_USER || 'postgres',
+  host: process.env.POSTGRES_HOST,
+  port: process.env.POSTGRES_PORT,
+  database: process.env.POSTGRES_DB,
+  user: process.env.POSTGRES_USER,
   password: process.env.POSTGRES_PASSWORD,
 });
 

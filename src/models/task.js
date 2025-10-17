@@ -1,24 +1,31 @@
+const mongoose = require('mongoose');
+
+const taskSchema = new mongoose.Schema({
+  title: {
+    type: String,
+    required: [true, 'Le titre est obligatoire'],
+    trim: true
+  },
+  description: {
+    type: String,
+    default: '',
+    trim: true
+  }
+}, {
+  timestamps: true // Ajoute automatiquement createdAt et updatedAt
+});
+
 /**
- Cette classe définit la structure des données d'une tâche stockée dans l'application
+ * Methode pour formater la tache en JSON
  */
-class Task {
-  static idCounter = 1;
+taskSchema.methods.toJSON = function() {
+  const task = this.toObject();
+  return {
+    id: task._id,
+    title: task.title,
+    description: task.description,
+    createdAt: task.createdAt
+  };
+};
 
-  constructor(title, description = '') {
-    this.id = Task.idCounter++;
-    this.title = title;
-    this.description = description;
-    this.createdAt = new Date();
-  }
-
-  toJSON() {
-    return {
-      id: this.id,
-      title: this.title,
-      description: this.description,
-      createdAt: this.createdAt.toISOString()
-    };
-  }
-}
-
-module.exports = Task;
+module.exports = mongoose.model('Task', taskSchema);

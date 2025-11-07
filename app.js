@@ -10,6 +10,10 @@ const taskRoutes = require('./src/routes/taskRoutes');
 const { connectPostgres, createTasksTable } = require('./src/config/postgres');
 const taskRoutesPG = require('./src/routes/taskRoutesPG');
 
+// Swagger
+const swaggerUi = require('swagger-ui-express');
+const swaggerDocument = require('./swagger.json');
+
 const app = express();
 
 // Connexion aux bases de donnees
@@ -23,6 +27,9 @@ const PORT = process.env.PORT || 3000;
 // Middlewares
 app.use(cors());
 app.use(express.json());
+
+// Swagger
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 // Routes MongoDB
 app.use('/api/todos', taskRoutes);

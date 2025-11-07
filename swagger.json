@@ -1,0 +1,270 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "TodoList API - Dual Database Support",
+    "version": "1.0.0",
+    "description": "API de gestion de todos avec support MongoDB et PostgreSQL"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3000",
+      "description": "Serveur de développement"
+    }
+  ],
+  "tags": [
+    {
+      "name": "MongoDB",
+      "description": "Endpoints pour la base de données MongoDB"
+    },
+    {
+      "name": "PostgreSQL",
+      "description": "Endpoints pour la base de données PostgreSQL"
+    }
+  ],
+  "paths": {
+    "/api/todos": {
+      "get": {
+        "tags": ["MongoDB"],
+        "summary": "Récupérer toutes les tâches (MongoDB)",
+        "description": "Retourne la liste de toutes les tâches stockées dans MongoDB",
+        "responses": {
+          "200": {
+            "description": "Liste des tâches récupérée avec succès",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Task"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erreur serveur"
+          }
+        }
+      },
+      "post": {
+        "tags": ["MongoDB"],
+        "summary": "Créer une nouvelle tâche (MongoDB)",
+        "description": "Ajoute une nouvelle tâche dans MongoDB",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TaskInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Tâche créée avec succès",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Task"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Données invalides"
+          },
+          "500": {
+            "description": "Erreur serveur"
+          }
+        }
+      }
+    },
+    "/api/todos/{id}": {
+      "delete": {
+        "tags": ["MongoDB"],
+        "summary": "Supprimer une tâche (MongoDB)",
+        "description": "Supprime une tâche par son ID dans MongoDB",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "ID de la tâche à supprimer",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Tâche supprimée avec succès"
+          },
+          "404": {
+            "description": "Tâche non trouvée"
+          },
+          "500": {
+            "description": "Erreur serveur"
+          }
+        }
+      }
+    },
+    "/api/todos-pg": {
+      "get": {
+        "tags": ["PostgreSQL"],
+        "summary": "Récupérer toutes les tâches (PostgreSQL)",
+        "description": "Retourne la liste de toutes les tâches stockées dans PostgreSQL",
+        "responses": {
+          "200": {
+            "description": "Liste des tâches récupérée avec succès",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/TaskPG"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erreur serveur"
+          }
+        }
+      },
+      "post": {
+        "tags": ["PostgreSQL"],
+        "summary": "Créer une nouvelle tâche (PostgreSQL)",
+        "description": "Ajoute une nouvelle tâche dans PostgreSQL",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TaskInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Tâche créée avec succès",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TaskPG"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Données invalides"
+          },
+          "500": {
+            "description": "Erreur serveur"
+          }
+        }
+      }
+    },
+    "/api/todos-pg/{id}": {
+      "delete": {
+        "tags": ["PostgreSQL"],
+        "summary": "Supprimer une tâche (PostgreSQL)",
+        "description": "Supprime une tâche par son ID dans PostgreSQL",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "ID de la tâche à supprimer",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Tâche supprimée avec succès"
+          },
+          "404": {
+            "description": "Tâche non trouvée"
+          },
+          "500": {
+            "description": "Erreur serveur"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Task": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "description": "ID MongoDB de la tâche"
+          },
+          "title": {
+            "type": "string",
+            "description": "Titre de la tâche"
+          },
+          "completed": {
+            "type": "boolean",
+            "description": "Statut de complétion de la tâche"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Date de création"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Date de dernière modification"
+          }
+        }
+      },
+      "TaskPG": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "ID PostgreSQL de la tâche"
+          },
+          "title": {
+            "type": "string",
+            "description": "Titre de la tâche"
+          },
+          "completed": {
+            "type": "boolean",
+            "description": "Statut de complétion de la tâche"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Date de création"
+          }
+        }
+      },
+      "TaskInput": {
+        "type": "object",
+        "required": ["title"],
+        "properties": {
+          "title": {
+            "type": "string",
+            "description": "Titre de la tâche",
+            "example": "Acheter du pain"
+          },
+          "completed": {
+            "type": "boolean",
+            "description": "Statut de complétion de la tâche",
+            "default": false,
+            "example": false
+          }
+        }
+      }
+    }
+  }
+}

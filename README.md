@@ -94,6 +94,18 @@ npm run dev
 
 L'API sera disponible sur http://localhost:3000
 
+## Documentation API (Swagger)
+
+Une interface Swagger est disponible pour tester et explorer l'API de maniere interactive :
+
+**Acceder a la documentation :** <http://localhost:3000/api-docs>
+
+L'interface Swagger permet de :
+
+- Visualiser tous les endpoints disponibles (MongoDB et PostgreSQL)
+- Tester les requetes directement depuis le navigateur
+- Voir les schemas de donnees et les reponses attendues
+
 ## Fonctionnalites
 
 L'API expose **2 sets d'endpoints** (un par base de donnees) :
@@ -188,6 +200,7 @@ curl -X DELETE http://localhost:3000/api/todos-pg/1
 - **Express.js** - Framework web
 - **MongoDB** + **Mongoose** - Base de donnees NoSQL
 - **PostgreSQL** + **pg** - Base de donnees SQL
+- **Swagger UI Express** - Documentation API interactive
 - **dotenv** - Gestion des variables d'environnement
 - **nodemon** - Rechargement automatique en developpement
 

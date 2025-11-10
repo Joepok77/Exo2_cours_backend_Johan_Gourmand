@@ -10,6 +10,9 @@ const taskRoutes = require('./src/routes/taskRoutes');
 const { connectPostgres, createTasksTable } = require('./src/config/postgres');
 const taskRoutesPG = require('./src/routes/taskRoutesPG');
 
+// Authentication
+const authRoutes = require('./src/routes/authRoutes');
+
 // Swagger
 const swaggerUi = require('swagger-ui-express');
 const swaggerDocument = require('./swagger.json');
@@ -31,6 +34,9 @@ app.use(express.json());
 // Swagger
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
+// Routes Authentication
+app.use('/api/auth', authRoutes);
+
 // Routes MongoDB
 app.use('/api/todos', taskRoutes);
 
@@ -40,17 +46,21 @@ app.use('/api/todos-pg', taskRoutesPG);
 // Route d'accueil pour indiquer les endpoints disponibles
 app.get('/', (_, res) => {
   res.json({
-    message: 'TodoList API - Dual Database Support',
+    message: 'TodoList API - Dual Database Support with JWT Authentication',
     endpoints: {
+      auth: {
+        signup: 'POST /api/auth/signup',
+        login: 'POST /api/auth/login'
+      },
       mongodb: {
-        getAll: 'GET /api/todos',
-        create: 'POST /api/todos',
-        delete: 'DELETE /api/todos/:id'
+        getAll: 'GET /api/todos (requires token)',
+        create: 'POST /api/todos (requires token)',
+        delete: 'DELETE /api/todos/:id (requires token)'
       },
       postgresql: {
-        getAll: 'GET /api/todos-pg',
-        create: 'POST /api/todos-pg',
-        delete: 'DELETE /api/todos-pg/:id'
+        getAll: 'GET /api/todos-pg (requires token)',
+        create: 'POST /api/todos-pg (requires token)',
+        delete: 'DELETE /api/todos-pg/:id (requires token)'
       }
     }
   });

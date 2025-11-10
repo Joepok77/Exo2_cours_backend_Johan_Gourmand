@@ -28,8 +28,25 @@ connectPostgres().then(() => {
 const PORT = process.env.PORT || 3000;
 
 // Middlewares
-app.use(cors());
+// Configuration CORS pour autoriser les headers d'authentification
+app.use(cors({
+  origin: '*', 
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Authorization', 'Content-Type'],
+  credentials: true
+}));
 app.use(express.json());
+
+// TODO: Ajouter le rate limiting pour la sécurité (protection contre brute force, DDoS)
+// Installer: npm install express-rate-limit
+// Exemple d'utilisation:
+// const rateLimit = require('express-rate-limit');
+// const limiter = rateLimit({
+//   windowMs: 15 * 60 * 1000, // 15 minutes
+//   max: 100, // Limit of 100 requests per IP
+//   message: 'Trop de requêtes, réessayez plus tard.'
+// });
+// app.use('/api/', limiter);
 
 // Swagger
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));

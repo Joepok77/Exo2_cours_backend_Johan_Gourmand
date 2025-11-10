@@ -1,4 +1,5 @@
 const jwt = require('jsonwebtoken');
+const bcrypt = require('bcrypt');
 const User = require('../models/user');
 
 // Login - Connexion
@@ -13,7 +14,21 @@ exports.login = async (req, res, next) => {
     return next(error);
   }
 
-  if (!existingUser || existingUser.password != password) {
+  if (!existingUser) {
+    const error = Error("Wrong details please check at once");
+    return next(error);
+  }
+
+  // Comparer le mot de passe avec bcrypt
+  let isValidPassword = false;
+  try {
+    isValidPassword = await bcrypt.compare(password, existingUser.password);
+  } catch {
+    const error = new Error("Error! Something went wrong.");
+    return next(error);
+  }
+
+  if (!isValidPassword) {
     const error = Error("Wrong details please check at once");
     return next(error);
   }
@@ -49,10 +64,19 @@ exports.login = async (req, res, next) => {
 exports.signup = async (req, res, next) => {
   const { name, email, password } = req.body;
 
+  // Hasher le mot de passe avec bcrypt
+  let hashedPassword;
+  try {
+    hashedPassword = await bcrypt.hash(password, 12);
+  } catch {
+    const error = new Error("Error! Could not hash password.");
+    return next(error);
+  }
+
   const newUser = User({
     name,
     email,
-    password,
+    password: hashedPassword,
   });
 
   try {
